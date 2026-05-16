@@ -1,0 +1,152 @@
+# ObscuraHTML
+
+> **HTML obfuscation tool** — stops casual copiers & scrapers.  
+> *Honest disclosure: a skilled dev with DevTools can still recover the source. This is obfuscation, not encryption.*
+
+```
+ ██████╗ ██████╗ ███████╗ ██████╗██╗   ██╗██████╗  █████╗
+██╔═══██╗██╔══██╗██╔════╝██╔════╝██║   ██║██╔══██╗██╔══██╗
+██║   ██║██████╔╝███████╗██║     ██║   ██║██████╔╝███████║
+██║   ██║██╔══██╗╚════██║██║     ██║   ██║██╔══██╗██╔══██║
+╚██████╔╝██████╔╝███████║╚██████╗╚██████╔╝██║  ██║██║  ██║
+ ╚═════╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+              ██╗  ██╗████████╗███╗   ███╗██╗
+              ██║  ██║╚══██╔══╝████╗ ████║██║
+              ███████║   ██║   ██╔████╔██║██║
+              ██╔══██║   ██║   ██║╚██╔╝██║██║
+              ██║  ██║   ██║   ██║ ╚═╝ ██║███████╗
+              ╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚══════╝
+```
+
+**v5.0.0 · by [Forhad](https://github.com/Forhadj)**
+
+---
+
+## Features
+
+| Feature | L1 Stealth | L2 Armored | L3 Fortress |
+|---------|:---:|:---:|:---:|
+| Safe HTML minify | ✔ | ✔ | ✔ |
+| deflate compress | ✔ | ✔ | ✔ |
+| SHA-256 integrity check | ✔ | ✔ | ✔ |
+| Chunked base64 | ✔ | ✔ | ✔ |
+| AES-256-GCM encrypt | — | ✔ | ✔ |
+| Polymorphic loader | — | ✔ | ✔ |
+| Blob URL loader (no eval) | — | — | ✔ |
+| Anti-debug trap | — | — | ✔ |
+| DevTools overlay | — | — | ✔ |
+| 14 decoy variables | — | — | ✔ |
+
+### Two file input modes
+- **Option 1** — pick from a numbered list of `.html` files in the current directory
+- **Option 2** — enter any absolute or relative path:
+  - Android Termux: `/storage/emulated/0/mysite/index.html`
+  - Linux/Mac: `~/Downloads/page.html`
+  - Windows: `C:\Users\User\Desktop\index.html`
+  - Relative: `./subfolder/index.html`
+
+---
+
+## Install
+
+### Termux (Android)
+```bash
+pkg install python git -y
+git clone https://github.com/Forhadj/ObscuraHTML.git
+cd ObscuraHTML
+bash install.sh
+```
+
+### Linux / macOS
+```bash
+git clone https://github.com/Forhadj/ObscuraHTML.git
+cd ObscuraHTML
+bash install.sh
+```
+
+### Manual
+```bash
+pip install rich pycryptodome brotli
+```
+
+---
+
+## Usage
+
+```bash
+python3 protector.py
+```
+
+**Menu options:**
+```
+[1]  Protect file from current directory   ← pick from list
+[2]  Protect file from any path            ← enter full path
+[3]  Batch protect all files here
+[4]  View protection history
+[5]  Exit
+```
+
+**Output file** is saved as `obscura_protected_<filename>.html` in the same directory as the source.
+
+---
+
+## How it works
+
+```
+Source HTML
+    │
+    ▼  minify (safe — skips <script>/<style>/<pre>)
+    ▼  zlib deflate compress
+    ▼  SHA-256 integrity hash (of compressed bytes)
+    ▼  AES-256-GCM encrypt  [L2+]
+    ▼  polymorphic JS loader (random variable names, decoys)
+    ▼  blob URL dynamic import  [L3 — no eval()]
+    │
+    ▼
+Protected HTML  (self-decrypts in browser)
+```
+
+The protected file is a self-contained HTML that decrypts itself in the browser using the Web Crypto API. No server required.
+
+---
+
+## Honest Security Statement
+
+- The decryption key is **embedded** in the JS — a determined developer with DevTools can always recover it.
+- This stops **casual copiers, scrapers, and bots** — not skilled developers.
+- AES-256-GCM is used correctly; the weakness is key distribution, not the algorithm.
+- Level 3 uses blob URL + `dynamic import()` — no `eval()` or `new Function()`.
+
+---
+
+## Requirements
+
+```
+rich>=13.7.0
+pycryptodome>=3.20.0
+brotli>=1.1.0
+```
+
+`brotli` is optional — the tool falls back to zlib/deflate if not installed (JS side always uses deflate for browser compatibility).
+
+---
+
+## Project Structure
+
+```
+ObscuraHTML/
+├── protector.py       ← main tool
+├── requirements.txt
+├── install.sh         ← auto installer (Termux + Linux)
+└── README.md
+```
+
+---
+
+## Author
+
+**Forhad** · [@Forhadj](https://github.com/Forhadj)
+
+---
+
+*ObscuraHTML — makes copying annoying, not impossible.*
