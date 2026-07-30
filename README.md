@@ -373,7 +373,7 @@ git push origin feature/your-feature
 **Forhad Hassan**
 
 [![GitHub](https://img.shields.io/badge/GitHub-@Forhadj-00FF88?style=for-the-badge&logo=github&logoColor=black)](https://github.com/Forhadj)
-[![Facebook](https://img.shields.io/badge/Facebook-@Forhadj-00FF88?style=for-the-badge&logo=facebook&logoColor=black)](https://facebook.com/Forhadj)
+
 
 ---
 
